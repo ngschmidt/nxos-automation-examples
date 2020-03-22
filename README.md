@@ -4,6 +4,8 @@ Generated with the NXAPI sandbox on NX-OS 9.3.3
 ## To use these examples
 * Run these scripts in Python, or any other appropriate client. More detail will be provided in comments.
 
+This is built against Python 3 and won't work with Python 2, but I'm trying to not be part of the problem here.
+
 ## Tested Platforms 
 NX-OS 9000v 9.3.3
 
