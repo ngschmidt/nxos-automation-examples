@@ -127,8 +127,10 @@ except ValueError as err:
 except IOError as err:
     print('A File I/O error has occurred. Please check your file path!')
     print(err)
+    exit()
 except:
     print('An unexpected error has occurred!')
+    exit()
 
 # Set headers and target for immediate processing
 url=args.nxapi_endpoint
