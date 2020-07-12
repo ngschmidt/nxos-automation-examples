@@ -32,4 +32,4 @@ else:
     url='https://10.7.28.99/ins'
     response = requests.post(url,data=json.dumps(payload), headers=myheaders,auth=(switchuser,switchpassword),cert=(client_cert,client_private_key),verify=ca_cert).json()
 
-print response
+print(response)
