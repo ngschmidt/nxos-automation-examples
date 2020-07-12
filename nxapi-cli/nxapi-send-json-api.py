@@ -122,6 +122,7 @@ try:
     with open(args.f) as json_file:
         payload = json.load(json_file)
 except ValueError as err:
+    print('Python thinks you have a json formatting issue. Please run your payload input through a json linter.')
     print(err)
     exit()
 except IOError as err:
