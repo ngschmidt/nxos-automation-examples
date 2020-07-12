@@ -17,6 +17,7 @@ from django.core.exceptions import ValidationError
 # Arguments Parsing
 parser = argparse.ArgumentParser(description='Fetch all routing tables via NX-API')
 parser.add_argument('-v', '--verbosity', action='count', default=0, help='Output Verbosity')
+parser.add_argument('-f', help='Select JSON Payload file')
 subparsers = parser.add_subparsers(help='Use Basic or CA Authentication')
 unpw = subparsers.add_parser('basic', help='Use Basic Authentication')
 unpw.add_argument('-u', help='NX-API Username')
@@ -115,19 +116,23 @@ ca_cert='PATH_TO_CA_CERT_THAT_SIGNED_NXAPI_SERVER_CERT'
 
 # Set NX-API URL and payload
 # Note: default API URI endpoint for NX-OS is /ins
-# Input is just an analogue for the CLI in this case, and returns data as json.
+
+# Attempt to load a json file, and lint it
+try:
+    with open(args.f) as json_file:
+        payload = json.load(json_file)
+except ValueError as err:
+    print(err)
+    exit()
+except IOError as err:
+    print('A File I/O error has occurred. Please check your file path!')
+    print(err)
+except:
+    print('An unexpected error has occurred!')
+
+# Set headers and target for immediate processing
 url=args.nxapi_endpoint
 myheaders={'content-type':'application/json'}
-payload={
-  "ins_api": {
-    "version": "1.0",
-    "type": "cli_show",
-    "chunk": "0",
-    "sid": "sid",
-    "input": "show ip route vrf all",
-    "output_format": "json"
-  }
-}
 
 # Create a JSON file if a developer wants to use this from the python code (it's sometimes easier)
 #with open('payload_show_ip_route_vrf_all.json', 'w') as outfile:
