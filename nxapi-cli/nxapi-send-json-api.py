@@ -38,6 +38,23 @@ except:
   print('Invalid URL. Please try a valid URL. Example: "http://10.1.1.1/ins"')
   exit()
 
+# Set NX-API Payload
+# Attempt to load a json file, and lint it
+try:
+    with open(args.f) as json_file:
+        payload = json.load(json_file)
+except ValueError as err:
+    print('Python thinks you have a json formatting issue. Please run your payload input through a json linter.')
+    print(err)
+    exit()
+except IOError as err:
+    print('A File I/O error has occurred. Please check your file path!')
+    print(err)
+    exit()
+except:
+    print('An unexpected error has occurred!')
+    exit()
+
 # Set HTTP Error + Verbosity table. Due to the use of max(min()), verbosity count becomes a numerical range that caps off and prevents array issues
 # Credit where due - https://gist.github.com/bl4de/3086cf26081110383631 by bl4de
 httperrors = {
@@ -114,25 +131,8 @@ client_cert='PATH_TO_CLIENT_CERT_FILE'
 client_private_key='PATH_TO_CLIENT_PRIVATE_KEY_FILE'
 ca_cert='PATH_TO_CA_CERT_THAT_SIGNED_NXAPI_SERVER_CERT'
 
-# Set NX-API URL and payload
+# Set NX-API URL and headers
 # Note: default API URI endpoint for NX-OS is /ins
-
-# Attempt to load a json file, and lint it
-try:
-    with open(args.f) as json_file:
-        payload = json.load(json_file)
-except ValueError as err:
-    print('Python thinks you have a json formatting issue. Please run your payload input through a json linter.')
-    print(err)
-    exit()
-except IOError as err:
-    print('A File I/O error has occurred. Please check your file path!')
-    print(err)
-    exit()
-except:
-    print('An unexpected error has occurred!')
-    exit()
-
 # Set headers and target for immediate processing
 url=args.nxapi_endpoint
 myheaders={'content-type':'application/json'}
